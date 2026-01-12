@@ -742,7 +742,7 @@
                 this.saveToStorage();
             },
 
-            getResidentData(id) {
+                       getResidentData(id) {
                 const resident = this.data.residents.find(r => r.id == id);
                 if (!resident) return null;
 
@@ -763,10 +763,6 @@
                     const monthIndex = parseInt(month) - 1;
                     const yearNum = parseInt(year);
                     
-                    // Only count completed months (before current month)
-                    // Current month is January (index 0), so only count months that have passed
-                    const isCompleted = yearNum < currentYear || (yearNum === currentYear && monthIndex < currentMonthIndex);
-                    
                     // Count ALL payments, regardless of whether month is past or future
                     const paid = this.data.contributions[monthKey][id] || 0;
                     totalPaid += paid;
@@ -781,6 +777,18 @@
                         totalOwed += owed;
                     }
                 });
+                
+                // Add previous year debt
+                totalOwed += previousDebt;
+
+                return {
+                    ...resident,
+                    totalPaid,
+                    totalOwed,
+                    previousDebt,
+                    status: totalOwed > 0 ? 'debt' : 'paid'
+                };
+            },
                 
                 // Add previous year debt
                 totalOwed += previousDebt;
@@ -1194,6 +1202,7 @@
     </script>
 </body>
 </html>
+
 
 
 
