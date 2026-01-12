@@ -755,8 +755,7 @@
                 const currentMonthIndex = parseInt(currentMonthKey.split('-')[1]) - 1; // 0=Jan, 1=Feb, etc
                 const currentYear = parseInt(currentMonthKey.split('-')[0]);
                 
-                // Calculate totals only from completed months (before current month)
-                // January 2026 is still in progress, so debts only count from February onwards
+                // Calculate totals from ALL months (including future/forward payments)
                 const months = Object.keys(this.data.contributions).sort();
                 
                 months.forEach(monthKey => {
@@ -768,17 +767,18 @@
                     // Current month is January (index 0), so only count months that have passed
                     const isCompleted = yearNum < currentYear || (yearNum === currentYear && monthIndex < currentMonthIndex);
                     
+                    // Count ALL payments, regardless of whether month is past or future
+                    const paid = this.data.contributions[monthKey][id] || 0;
+                    totalPaid += paid;
+                    
+                    // Only count debts for completed months (before current month)
+                    // Current month is January (index 0), so only count months that have passed
+                    const isCompleted = yearNum < currentYear || (yearNum === currentYear && monthIndex < currentMonthIndex);
+                    
                     if (isCompleted) {
-                        const paid = this.data.contributions[monthKey][id] || 0;
-                        totalPaid += paid;
-                        
                         // Debt for this month = if they didn't pay the required amount
                         const owed = Math.max(0, this.data.monthlyContribution - paid);
                         totalOwed += owed;
-                    } else if (monthKey === currentMonthKey) {
-                        // Count January 2026 payments but NO debts yet (month not completed)
-                        const paid = this.data.contributions[monthKey][id] || 0;
-                        totalPaid += paid;
                     }
                 });
                 
@@ -1194,6 +1194,7 @@
     </script>
 </body>
 </html>
+
 
 
 
