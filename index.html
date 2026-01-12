@@ -1165,6 +1165,7 @@
                         if (confirm('⚠️ This will replace ALL current data with the imported data.\n\nContinue?')) {
                             DataManager.data.residents = importedData.residents;
                             DataManager.data.contributions = importedData.contributions;
+                            DataManager.data.previousDebts = importedData.previousDebts;
                             if (importedData.currentMonth) {
                                 DataManager.data.currentMonth = importedData.currentMonth;
                             }
@@ -1193,6 +1194,7 @@
     </script>
 </body>
 </html>
+
 
 
 
