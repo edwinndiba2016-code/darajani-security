@@ -1167,7 +1167,7 @@
                             if (importedData.currentMonth) {
                                 DataManager.data.currentMonth = importedData.currentMonth;
                             }
-                            DataManager.saveData();
+                            DataManager.saveToStorage();
 
                             alert('✓ Data imported successfully!\n\nMembers now have the latest information.');
                             this.renderAdminPanel();
@@ -1192,5 +1192,6 @@
     </script>
 </body>
 </html>
+
 
 
