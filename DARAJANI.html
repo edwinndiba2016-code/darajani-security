@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARAJANI SECURITY - Contribution Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 3px solid #e0e0e0;
+            background: linear-gradient(to right, #f5f7fa 0%, #ffffff 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .nav-tabs button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-tabs button:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: #667eea;
+        }
+
+        .nav-tabs button.active {
+            color: #ffffff;
+            border-bottom-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Resident Card */
+        .resident-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .resident-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+
+        .resident-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .resident-card .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .resident-card .info-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .resident-card .info-item label {
+            color: #999;
+            font-weight: 700;
+            display: block;
+            font-size: 11px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resident-card .info-item .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .resident-card .debt {
+            color: #f5576c;
+        }
+
+        .resident-card .paid {
+            color: #4facfe;
+        }
+
+        /* Admin Form */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 700;
+            color: #333;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: #f8faff;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button.btn {
+            padding: 13px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button.btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        button.btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        button.btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        button.btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        button.btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.4);
+        }
+
+        button.btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        button.btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(79, 172, 254, 0.4);
+        }
+
+        button.btn-secondary {
+            background: linear-gradient(135deg, #a8a8a8 0%, #7a7a7a 100%);
+            color: white;
+        }
+
+        button.btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(122, 122, 122, 0.4);
+        }
+
+        /* Members List */
+        .members-list {
+            margin-top: 20px;
+        }
+
+        .member-row {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 60px;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .member-row:hover {
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+            transform: translateX(2px);
+        }
+
+        .member-row button {
+            padding: 8px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+        }
+
+        .member-row button:hover {
+            background: linear-gradient(135deg, #c82333 0%, #b01d2e 100%);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Month Update */
+        .month-form {
+            background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.12);
+        }
+
+        .month-form h3 {
+            margin-bottom: 18px;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .contribution-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .contribution-item {
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .contribution-item input {
+            max-width: 100%;
+        }
+
+        .alert {
+            padding: 16px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-left: 4px solid;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c8e6c9 100%);
+            color: #155724;
+            border-color: #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #c3e4f0 100%);
+            color: #0c5460;
+            border-color: #17a2b8;
+            box-shadow: 0 2px 8px rgba(23, 162, 184, 0.15);
+        }
+
+        .resident-search {
+            margin-bottom: 18px;
+        }
+
+        .resident-search input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .resident-search input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: #f8faff;
+        }
+            font-size: 14px;
+        }
+
+        .resident-search input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .member-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .resident-card .info {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+            }
+
+            .nav-tabs button {
+                white-space: nowrap;
+                padding: 12px 10px;
+            }
+        }
+
+        .search-results {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .password-protected {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        /* Export/Import Section */
+        .export-import-section {
+            background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .export-import-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .export-import-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        .import-file-label {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .password-form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .password-form input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .password-form button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .password-form button:hover {
+            background: #5568d3;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏘️ DARAJANI SECURITY</h1>
+            <p>Monthly Contributions Management System</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-btn active" data-tab="view">View My Account</button>
+            <button class="nav-btn" data-tab="residents">All Residents</button>
+            <button class="nav-btn" data-tab="admin">Admin Panel</button>
+        </div>
+
+        <div class="content">
+            <!-- View My Account Tab -->
+            <div id="view" class="tab-content active">
+                <div class="resident-search">
+                    <input type="text" id="searchInput" placeholder="Enter your house number or name to find your account...">
+                </div>
+                <div id="searchResults"></div>
+            </div>
+
+            <!-- All Residents Tab -->
+            <div id="residents" class="tab-content">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="label">Total Members</div>
+                        <div class="value" id="totalMembers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Total Debt</div>
+                        <div class="value" id="totalDebt">TZS 0</div>
+                    </div>
+                </div>
+                <div id="residentsList"></div>
+            </div>
+
+            <!-- Admin Panel Tab -->
+            <div id="admin" class="tab-content">
+                <div id="adminContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Management
+        const DataManager = {
+            data: {
+                residents: [],
+                contributions: {},
+                previousDebts: {},
+                password: 'admin123',
+                currentMonth: '2026-01',
+                monthlyContribution: 26000
+            },
+
+            init() {
+                this.loadFromExcelData();
+                this.ensureMonthData();
+            },
+
+            loadFromExcelData() {
+                // Excel data extracted from updated PROGRAM EXCELL.xlsx
+                this.data.residents = [
+                    { id: 1, name: 'Prof E. Wema', houseNumber: '42', joinedDate: '2026-01-01' },
+                    { id: 2, name: 'Mr Andambike', houseNumber: '43', joinedDate: '2026-01-01' },
+                    { id: 3, name: 'Mr MacDonald', houseNumber: '44', joinedDate: '2026-01-01' },
+                    { id: 4, name: 'Mr.Bokhe Nyaisaba', houseNumber: '45', joinedDate: '2026-01-01' },
+                    { id: 5, name: 'Diana Masebo', houseNumber: '46', joinedDate: '2026-01-01' },
+                    { id: 6, name: 'Mary Moshi/Fungo', houseNumber: '47', joinedDate: '2026-01-01' },
+                    { id: 7, name: 'Mr Mwabungulu', houseNumber: '48', joinedDate: '2026-01-01' },
+                    { id: 8, name: 'Dr. Ignasia Mbatta', houseNumber: '49', joinedDate: '2026-01-01' },
+                    { id: 9, name: 'Empty', houseNumber: '50', joinedDate: '2026-01-01' },
+                    { id: 10, name: 'Dr Baraka Mbata', houseNumber: '51', joinedDate: '2026-01-01' },
+                    { id: 11, name: 'Eng. Hassan Mwanga', houseNumber: '52', joinedDate: '2026-01-01' },
+                    { id: 12, name: 'Empty', houseNumber: '53', joinedDate: '2026-01-01' },
+                    { id: 13, name: 'Dr Rachel', houseNumber: '54', joinedDate: '2026-01-01' },
+                    { id: 14, name: 'Mashayo', houseNumber: '55', joinedDate: '2026-01-01' },
+                    { id: 15, name: 'Dr Zainab Katima', houseNumber: '56', joinedDate: '2026-01-01' },
+                    { id: 16, name: 'Daniel Dedatus', houseNumber: '57', joinedDate: '2026-01-01' },
+                    { id: 17, name: 'Mbise', houseNumber: '58', joinedDate: '2026-01-01' },
+                    { id: 18, name: 'Jenitha Rugaika', houseNumber: '59', joinedDate: '2026-01-01' },
+                    { id: 19, name: 'F. Mutabazi /Msuya', houseNumber: '60', joinedDate: '2026-01-01' },
+                    { id: 20, name: 'Tumaini Yohana', houseNumber: '61', joinedDate: '2026-01-01' },
+                    { id: 21, name: 'Dr. Hubert Msuya', houseNumber: '62', joinedDate: '2026-01-01' },
+                    { id: 22, name: 'Dr Veronica Buchumi', houseNumber: '63', joinedDate: '2026-01-01' },
+                    { id: 23, name: 'Mwanyange', houseNumber: '1A', joinedDate: '2026-01-01' },
+                    { id: 24, name: 'E. Ndibalema', houseNumber: '1B', joinedDate: '2026-01-01' },
+                    { id: 25, name: 'Dr Olomy', houseNumber: '2A', joinedDate: '2026-01-01' },
+                    { id: 26, name: 'Swaumu Hassan', houseNumber: '2B', joinedDate: '2026-01-01' },
+                    { id: 27, name: 'Dr Shadrack Chang\'a', houseNumber: '3A', joinedDate: '2026-01-01' },
+                    { id: 28, name: 'HOUSE', houseNumber: '3B', joinedDate: '2026-01-01' },
+                    { id: 29, name: 'Ituja, Mollel & Mhina', houseNumber: '4A', joinedDate: '2026-01-01' },
+                    { id: 30, name: 'Daud /Abdul Shabani', houseNumber: '4B', joinedDate: '2026-01-01' },
+                    { id: 31, name: 'Dr O. Lemna Saitabau/:Mnzava', houseNumber: '5A', joinedDate: '2026-01-01' },
+                    { id: 32, name: 'Mr Ibrahim Mwasubila', houseNumber: '5B', joinedDate: '2026-01-01' },
+                    { id: 33, name: 'Dr Noela Ndunguru', houseNumber: '6A', joinedDate: '2026-01-01' },
+                    { id: 34, name: 'HOUSE', houseNumber: '6B', joinedDate: '2026-01-01' },
+                    { id: 35, name: 'Dr Athumani COET', houseNumber: '7A', joinedDate: '2026-01-01' },
+                    { id: 36, name: 'Dr. Teresia D', houseNumber: '7B', joinedDate: '2026-01-01' },
+                    { id: 37, name: 'Sara Ilani', houseNumber: '8A', joinedDate: '2026-01-01' },
+                    { id: 38, name: 'Dr. A. Lubida', houseNumber: '8B', joinedDate: '2026-01-01' },
+                    { id: 39, name: 'Dr.J. Wakota', houseNumber: '9A', joinedDate: '2026-01-01' },
+                    { id: 40, name: 'Dr Mombeki', houseNumber: '9B', joinedDate: '2026-01-01' },
+                    { id: 41, name: 'Ms Zained', houseNumber: '10A', joinedDate: '2026-01-01' },
+                    { id: 42, name: 'Dr Salvatory Nyanto', houseNumber: '10B', joinedDate: '2026-01-01' },
+                    { id: 43, name: 'Mr Akili Kalekezi', houseNumber: '11A', joinedDate: '2026-01-01' },
+                    { id: 44, name: 'HOUSE', houseNumber: '11B', joinedDate: '2026-01-01' },
+                    { id: 45, name: 'Dr Jackline Mgumia', houseNumber: '12A', joinedDate: '2026-01-01' },
+                    { id: 46, name: 'Irene Masenge', houseNumber: '12B', joinedDate: '2026-01-01' },
+                    { id: 47, name: 'Dr Mathayo Gervas', houseNumber: '13B', joinedDate: '2026-01-01' },
+                    { id: 48, name: 'Dr Philbert Komu', houseNumber: '13A', joinedDate: '2026-01-01' },
+                    { id: 49, name: 'SUM', houseNumber: 'Special', joinedDate: '2026-01-01' }
+                ];
+
+                // Previous debts from updated Excel
+                this.data.previousDebts = {
+                    1: 0, 2: 78000, 3: 0, 4: 0, 5: 0, 6: 0, 7: 78000, 8: 0, 9: 78000, 10: 0, 
+                    11: 26000, 12: 78000, 13: 0, 14: 0, 15: 0, 16: 78000, 17: 78000, 18: 0, 19: 0, 20: 0, 
+                    21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 78000, 29: 78000, 30: 78000, 
+                    31: 0, 32: 0, 33: 0, 34: 78000, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 
+                    41: 78000, 42: 0, 43: 78000, 44: 78000, 45: 52000, 46: 0, 47: 0, 48: 0, 49: 0
+                };
+
+                // 2026 monthly contributions from updated Excel
+                this.data.contributions = {
+                    '2026-01': { 1: 26000, 2: 0, 3: 0, 4: 0, 5: 0, 6: 26000, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 26000, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 26000, 20: 0, 21: 0, 22: 26000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 26000, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 26000, 38: 0, 39: 0, 40: 0, 41: 0, 42: 22000, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-02': { 1: 26000, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 26000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-03': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 26000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-04': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 26000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-05': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 26000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-06': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 20000, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-07': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-08': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-09': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-10': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-11': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 },
+                    '2026-12': { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0, 13: 0, 14: 0, 15: 26000, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0, 24: 0, 25: 0, 26: 0, 27: 0, 28: 0, 29: 0, 30: 0, 31: 0, 32: 0, 33: 0, 34: 0, 35: 0, 36: 0, 37: 0, 38: 0, 39: 0, 40: 0, 41: 0, 42: 0, 43: 0, 44: 0, 45: 0, 46: 0, 47: 0, 48: 0, 49: 0 }
+                };
+
+                this.saveToStorage();
+            },
+
+            saveToStorage() {
+                localStorage.setItem('darajaniSecurityData', JSON.stringify(this.data));
+            },
+
+            loadFromStorage() {
+                const stored = localStorage.getItem('darajaniSecurityData');
+                if (stored) {
+                    this.data = JSON.parse(stored);
+                }
+            },
+
+            ensureMonthData() {
+                if (!this.data.contributions[this.data.currentMonth]) {
+                    this.data.contributions[this.data.currentMonth] = {};
+                    this.data.residents.forEach(resident => {
+                        this.data.contributions[this.data.currentMonth][resident.id] = 0;
+                    });
+                    this.saveToStorage();
+                }
+            },
+
+            addResident(name, houseNumber) {
+                const id = Math.max(...this.data.residents.map(r => r.id || 0), 0) + 1;
+                this.data.residents.push({
+                    id,
+                    name,
+                    houseNumber,
+                    joinedDate: new Date().toISOString().slice(0, 10)
+                });
+                this.data.previousDebts[id] = 0;
+                Object.keys(this.data.contributions).forEach(month => {
+                    this.data.contributions[month][id] = 0;
+                });
+                this.saveToStorage();
+                return id;
+            },
+
+            removeResident(id) {
+                this.data.residents = this.data.residents.filter(r => r.id != id);
+                delete this.data.previousDebts[id];
+                Object.keys(this.data.contributions).forEach(month => {
+                    delete this.data.contributions[month][id];
+                });
+                this.saveToStorage();
+            },
+
+            updateContribution(month, residentId, amount) {
+                if (!this.data.contributions[month]) {
+                    this.data.contributions[month] = {};
+                }
+                this.data.contributions[month][residentId] = parseInt(amount) || 0;
+                this.saveToStorage();
+            },
+
+            getResidentData(id) {
+                const resident = this.data.residents.find(r => r.id == id);
+                if (!resident) return null;
+
+                let totalPaid = 0;
+                let totalOwed = 0;
+                const previousDebt = this.data.previousDebts[id] || 0;
+                
+                // Get current month index (0-based) - used to determine completed months
+                const currentMonthKey = this.data.currentMonth;
+                const currentMonthIndex = parseInt(currentMonthKey.split('-')[1]) - 1; // 0=Jan, 1=Feb, etc
+                const currentYear = parseInt(currentMonthKey.split('-')[0]);
+                
+                // Calculate totals only from completed months (before current month)
+                // January 2026 is still in progress, so debts only count from February onwards
+                const months = Object.keys(this.data.contributions).sort();
+                
+                months.forEach(monthKey => {
+                    const [year, month] = monthKey.split('-');
+                    const monthIndex = parseInt(month) - 1;
+                    const yearNum = parseInt(year);
+                    
+                    // Only count completed months (before current month)
+                    // Current month is January (index 0), so only count months that have passed
+                    const isCompleted = yearNum < currentYear || (yearNum === currentYear && monthIndex < currentMonthIndex);
+                    
+                    if (isCompleted) {
+                        const paid = this.data.contributions[monthKey][id] || 0;
+                        totalPaid += paid;
+                        
+                        // Debt for this month = if they didn't pay the required amount
+                        const owed = Math.max(0, this.data.monthlyContribution - paid);
+                        totalOwed += owed;
+                    } else if (monthKey === currentMonthKey) {
+                        // Count January 2026 payments but NO debts yet (month not completed)
+                        const paid = this.data.contributions[monthKey][id] || 0;
+                        totalPaid += paid;
+                    }
+                });
+                
+                // Add previous year debt
+                totalOwed += previousDebt;
+
+                return {
+                    ...resident,
+                    totalPaid,
+                    totalOwed,
+                    previousDebt,
+                    status: totalOwed > 0 ? 'debt' : 'paid'
+                };
+            },
+            
+            getMonthlyBreakdown(id) {
+                const months = ['2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12'];
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                
+                const breakdown = [];
+                months.forEach((monthKey, idx) => {
+                    const paid = this.data.contributions[monthKey][id] || 0;
+                    const owed = Math.max(0, this.data.monthlyContribution - paid);
+                    breakdown.push({
+                        month: monthNames[idx],
+                        monthKey: monthKey,
+                        required: this.data.monthlyContribution,
+                        paid: paid,
+                        owed: owed,
+                        isPaid: paid >= this.data.monthlyContribution
+                    });
+                });
+                return breakdown;
+            },
+
+            getTotalDebt() {
+                let total = 0;
+                this.data.residents.forEach(resident => {
+                    const data = this.getResidentData(resident.id);
+                    total += data.totalOwed;
+                });
+                return total;
+            }
+        };
+
+        // UI Controller
+        const UIController = {
+            init() {
+                this.setupTabs();
+                this.renderAllTabs();
+                this.setupEventListeners();
+            },
+
+            setupTabs() {
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                        const tabId = e.target.dataset.tab;
+                        document.getElementById(tabId).classList.add('active');
+                        if (tabId === 'admin') this.renderAdminPanel();
+                    });
+                });
+            },
+
+            setupEventListeners() {
+                document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                    this.searchResidents(e.target.value);
+                });
+            },
+
+            renderAllTabs() {
+                this.renderViewAccount();
+                this.renderAllResidents();
+            },
+
+            renderViewAccount() {
+                const container = document.getElementById('searchResults');
+                if (DataManager.data.residents.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>No residents found. Add some first in Admin Panel!</p></div>';
+                    return;
+                }
+                container.innerHTML = '<p style="color: #999; font-size: 13px;">Type your house number or name above...</p>';
+            },
+
+            searchResidents(query) {
+                const container = document.getElementById('searchResults');
+                query = query.toLowerCase().trim();
+
+                if (!query) {
+                    this.renderViewAccount();
+                    return;
+                }
+
+                const results = DataManager.data.residents.filter(r =>
+                    r.name.toLowerCase().includes(query) ||
+                    r.houseNumber.toLowerCase().includes(query)
+                );
+
+                if (results.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>No results found</p></div>';
+                    return;
+                }
+
+                container.innerHTML = results.map(r => {
+                    const data = DataManager.getResidentData(r.id);
+                    const breakdown = DataManager.getMonthlyBreakdown(r.id);
+                    
+                    return `
+                        <div class="resident-card">
+                            <h3>${data.name} - House #${data.houseNumber}</h3>
+                            <div class="info">
+                                <div class="info-item">
+                                    <label>Total Paid</label>
+                                    <div class="value paid">TZS ${data.totalPaid.toLocaleString()}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Total Owed</label>
+                                    <div class="value ${data.totalOwed > 0 ? 'debt' : 'paid'}">TZS ${data.totalOwed.toLocaleString()}</div>
+                                </div>
+                            </div>
+                            ${data.previousDebt > 0 ? `
+                                <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 6px; border-left: 3px solid #ffc107; font-size: 13px;">
+                                    <strong>Previous Years Debt:</strong> TZS ${data.previousDebt.toLocaleString()}
+                                </div>
+                            ` : ''}
+                            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                                <h4 style="margin-bottom: 10px; font-size: 14px; color: #333;">2026 Monthly Breakdown:</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                    ${breakdown.map(b => `
+                                        <div style="background: ${b.isPaid ? '#d4edda' : '#f8d7da'}; padding: 10px; border-radius: 6px; border-left: 3px solid ${b.isPaid ? '#28a745' : '#dc3545'}; font-size: 12px;">
+                                            <div style="font-weight: 600; margin-bottom: 3px;">${b.month}</div>
+                                            <div style="color: #666;">Required: TZS ${b.required.toLocaleString()}</div>
+                                            <div style="color: ${b.isPaid ? '#28a745' : '#dc3545'}; font-weight: 600;">Paid: TZS ${b.paid.toLocaleString()}</div>
+                                            ${b.owed > 0 ? `<div style="color: #dc3545;">Owed: TZS ${b.owed.toLocaleString()}</div>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+                                <strong>Status:</strong> ${data.totalOwed > 0 ? '⚠️ Has Outstanding Balance' : '✓ All Paid Up'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            renderAllResidents() {
+                const container = document.getElementById('residentsList');
+                if (DataManager.data.residents.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>No residents added yet. Go to Admin Panel to add members.</p></div>';
+                    return;
+                }
+
+                const html = DataManager.data.residents.map(resident => {
+                    const data = DataManager.getResidentData(resident.id);
+                    const breakdown = DataManager.getMonthlyBreakdown(resident.id);
+                    const id = `details-${resident.id}`;
+                    
+                    return `
+                        <div class="resident-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h3 style="margin-bottom: 5px;">${data.name} - House #${data.houseNumber}</h3>
+                                </div>
+                                <button onclick="document.getElementById('${id}').style.display = document.getElementById('${id}').style.display === 'none' ? 'block' : 'none'; this.textContent = this.textContent === 'Show' ? 'Hide' : 'Show';" style="background: #667eea; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Show</button>
+                            </div>
+                            <div class="info">
+                                <div class="info-item">
+                                    <label>Total Paid (2026)</label>
+                                    <div class="value paid">TZS ${data.totalPaid.toLocaleString()}</div>
+                                </div>
+                                <div class="info-item">
+                                    <label>Outstanding Balance</label>
+                                    <div class="value ${data.totalOwed > 0 ? 'debt' : 'paid'}">TZS ${data.totalOwed.toLocaleString()}</div>
+                                </div>
+                            </div>
+                            ${data.previousDebt > 0 ? `
+                                <div style="margin-top: 10px; padding: 8px; background: #fff3cd; border-radius: 4px; border-left: 3px solid #ffc107; font-size: 12px;">
+                                    <strong>Previous Years Debt:</strong> TZS ${data.previousDebt.toLocaleString()}
+                                </div>
+                            ` : ''}
+                            <div id="${id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                                <h5 style="margin-bottom: 10px; font-size: 13px; color: #333;">Monthly Details (2026):</h5>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 11px;">
+                                    ${breakdown.map(b => `
+                                        <div style="background: ${b.isPaid ? '#d4edda' : '#f8d7da'}; padding: 8px; border-radius: 4px; border-left: 3px solid ${b.isPaid ? '#28a745' : '#dc3545'};">
+                                            <div style="font-weight: 600; margin-bottom: 2px;">${b.month}</div>
+                                            <div style="color: #666;">Req: TZS ${(b.required/1000).toFixed(0)}K</div>
+                                            <div style="color: ${b.isPaid ? '#28a745' : '#dc3545'}; font-weight: 600;">Paid: TZS ${(b.paid/1000).toFixed(0)}K</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const totalDebt = DataManager.getTotalDebt();
+                document.getElementById('totalMembers').textContent = DataManager.data.residents.filter(r => r.name !== 'Empty').length;
+                document.getElementById('totalDebt').textContent = `TZS ${totalDebt.toLocaleString()}`;
+
+                container.innerHTML = html;
+            },
+
+            renderAdminPanel() {
+                const container = document.getElementById('adminContent');
+                const isAuthenticated = sessionStorage.getItem('adminAuth') === 'true';
+
+                if (!isAuthenticated) {
+                    container.innerHTML = `
+                        <div class="password-protected">
+                            <h3 style="margin-bottom: 20px; color: #333;">Admin Panel - Password Required</h3>
+                            <div class="password-form">
+                                <input type="password" id="adminPassword" placeholder="Enter admin password">
+                                <button onclick="UIController.checkPassword()">Login</button>
+                                <p style="margin-top: 10px; font-size: 12px; color: #999;">Default: admin123</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.renderAdminContent();
+            },
+
+            checkPassword() {
+                const password = document.getElementById('adminPassword').value;
+                if (password === DataManager.data.password) {
+                    sessionStorage.setItem('adminAuth', 'true');
+                    this.renderAdminPanel();
+                } else {
+                    alert('Wrong password!');
+                }
+            },
+
+            renderAdminContent() {
+                const container = document.getElementById('adminContent');
+                const currentMonth = DataManager.data.currentMonth;
+
+                let html = `
+                    <div class="alert alert-info">
+                        👤 <strong>Admin Panel</strong> - You are logged in as Treasurer<br>
+                        <button onclick="sessionStorage.removeItem('adminAuth'); location.reload()" style="margin-top: 10px; padding: 5px 15px; background: #0c5460; color: white; border: none; border-radius: 4px; cursor: pointer;">Logout</button>
+                    </div>
+
+                    <div class="export-import-section">
+                        <h3>💾 Backup & Share Data</h3>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Export data to share with members or backup. Members can import to get latest data.</p>
+                        <div class="export-import-buttons">
+                            <button class="btn btn-primary" onclick="UIController.exportData()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none;">📥 Export Data</button>
+                            <label class="btn btn-primary import-file-label" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border: none; margin: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                📤 Import Data
+                                <input type="file" id="importFile" accept=".json" onchange="UIController.importData(event)">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                        <div>
+                            <h3 style="margin-bottom: 15px; color: #333;">➕ Add New Member</h3>
+                            <div class="form-group">
+                                <label>Member Name</label>
+                                <input type="text" id="newResidentName" placeholder="e.g., John Kiprotich">
+                            </div>
+                            <div class="form-group">
+                                <label>House Number (Important!)</label>
+                                <input type="text" id="newResidentHouse" placeholder="e.g., 101">
+                            </div>
+                            <button class="btn btn-primary" onclick="UIController.addResident()">Add Member</button>
+                        </div>
+
+                        <div>
+                            <h3 style="margin-bottom: 15px; color: #333;">📅 Monthly Contributions</h3>
+                            <p style="margin-bottom: 10px; color: #666; font-size: 13px;">Current Month: <strong>${currentMonth}</strong></p>
+                            <div class="form-group">
+                                <label>Change Month</label>
+                                <input type="month" id="monthSelector" value="${currentMonth}" onchange="UIController.changeMonth()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="month-form">
+                        <h3>Update ${currentMonth} Contributions</h3>
+                        <div class="contribution-items">
+                            ${DataManager.data.residents.map(resident => `
+                                <div class="contribution-item">
+                                    <div>
+                                        <strong>${resident.name}</strong><br>
+                                        <small style="color: #999;">House #${resident.houseNumber}</small>
+                                    </div>
+                                    <input type="number" value="${DataManager.data.contributions[currentMonth]?.[resident.id] || 0}" 
+                                           onchange="DataManager.updateContribution('${currentMonth}', ${resident.id}, this.value); UIController.renderAllTabs();"
+                                           placeholder="Amount">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn btn-success" onclick="alert('✓ All contributions are automatically saved!')" style="margin-top: 15px;">💾 Data Saved</button>
+                    </div>
+
+                    <h3 style="margin-top: 30px; margin-bottom: 15px; color: #333;">👥 Manage Members</h3>
+                    <div style="overflow-x: auto;">
+                        ${DataManager.data.residents.length > 0 ? `
+                            <div style="min-width: 400px;">
+                                ${DataManager.data.residents.map(r => `
+                                    <div class="member-row">
+                                        <div><strong>${r.name}</strong><br><small style="color: #999;">House #${r.houseNumber}</small></div>
+                                        <div style="text-align: center; font-size: 12px; color: #666;">${r.houseNumber}</div>
+                                        <div style="text-align: center; font-size: 12px; color: #666;">${r.joinedDate}</div>
+                                        <button onclick="if(confirm('Remove ${r.name}?')) { DataManager.removeResident(${r.id}); UIController.renderAdminPanel(); UIController.renderAllTabs(); }">Remove</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p style="color: #999;">No members yet. Add one above!</p>'}
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            },
+
+            addResident() {
+                const name = document.getElementById('newResidentName').value.trim();
+                const house = document.getElementById('newResidentHouse').value.trim();
+
+                if (!name || !house) {
+                    alert('Please enter both name and house number!');
+                    return;
+                }
+
+                DataManager.addResident(name, house);
+                document.getElementById('newResidentName').value = '';
+                document.getElementById('newResidentHouse').value = '';
+                alert('✓ Member added successfully!');
+                this.renderAdminPanel();
+                this.renderAllTabs();
+            },
+
+            changeMonth() {
+                const month = document.getElementById('monthSelector').value;
+                DataManager.data.currentMonth = month;
+                DataManager.ensureMonthData();
+                this.renderAdminPanel();
+            },
+
+            exportData() {
+                const dataToExport = {
+                    exportDate: new Date().toISOString(),
+                    lastUpdated: new Date().toLocaleDateString('en-US'),
+                    residents: DataManager.data.residents,
+                    contributions: DataManager.data.contributions,
+                    currentMonth: DataManager.data.currentMonth
+                };
+
+                const dataStr = JSON.stringify(dataToExport, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `darajani_data_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                alert('✓ Data exported successfully!\n\nFile: darajani_data_' + new Date().toISOString().split('T')[0] + '.json\n\nShare this file with residents.');
+            },
+
+            importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+
+                        if (!importedData.residents || !importedData.contributions) {
+                            alert('❌ Invalid data file! Please check the file format.');
+                            return;
+                        }
+
+                        if (confirm('⚠️ This will replace ALL current data with the imported data.\n\nContinue?')) {
+                            DataManager.data.residents = importedData.residents;
+                            DataManager.data.contributions = importedData.contributions;
+                            if (importedData.currentMonth) {
+                                DataManager.data.currentMonth = importedData.currentMonth;
+                            }
+                            DataManager.saveData();
+
+                            alert('✓ Data imported successfully!\n\nMembers now have the latest information.');
+                            this.renderAdminPanel();
+                            this.renderAllTabs();
+                        }
+                    } catch (error) {
+                        alert('❌ Error reading file: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+
+                // Reset file input
+                event.target.value = '';
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            DataManager.init();
+            UIController.init();
+        });
+    </script>
+</body>
+</html>
